@@ -35,12 +35,12 @@ class EventController extends Controller
         $currentDateTime = date('Y-m-d H:i:s');
         $events = DB::table('events')
             ->where(
-                "startAt",
+                "start_at",
                 ">=",
                 $currentDateTime
             )
             ->where(
-                "endAt",
+                "end_at",
                 "<=",
                 $currentDateTime
             )

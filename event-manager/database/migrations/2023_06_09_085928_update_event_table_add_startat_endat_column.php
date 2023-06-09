@@ -13,8 +13,8 @@ return new class extends Migration
     {
         //
         Schema::table('events', function (Blueprint $table) {
-            $table->dateTime('startAt')->nullable(false);
-            $table->dateTime('endAt')->nullable(false);
+            $table->dateTime('start_at')->nullable(false)->default(0);
+            $table->dateTime('end_at')->nullable(false)->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
     {
         //
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('startAt');
-            $table->dropColumn('endAt');
+            $table->dropColumn('start_at');
+            $table->dropColumn('end_at');
         });
     }
 };

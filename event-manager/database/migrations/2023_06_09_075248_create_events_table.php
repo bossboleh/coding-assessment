@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('id')->unique()->nullable(false)->primary();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->dateTime('createAt')->nullable(false);
-            $table->dateTime('updateAt')->nullable(false);
+            $table->dateTime('created_at')->nullable(false);
+            $table->dateTime('updated_at')->nullable(false);
         });
     }
 
