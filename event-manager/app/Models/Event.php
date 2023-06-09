@@ -10,5 +10,5 @@ class Event extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ["name", "slug"];
+    protected $fillable = ["name", "slug", "start_at", "end_at"];
 }

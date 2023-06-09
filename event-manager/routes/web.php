@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\EventController;
+use App\Models\Event;
+use App\Services\Paginator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +20,33 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::prefix('/events')->group(function () {
+    Route::get('/{id}', function ($id) {
+        return view('events.view', [
+            'event' => Event::find($id)
+        ]);
+    });
+
+    //Pagination
+    Route::get('/page/{page}', function ($currentPage) {
+        $paginator = App::make(Paginator::class);
+
+        $activeEvents = Event::where('deleted_at', null);
+        $totalRows = $activeEvents->count();
+
+        list($prevPage, $nextPage, $skip, $pageLimit) = $paginator->getPagingNumber($currentPage, $totalRows);
+        $events = $activeEvents->limit($pageLimit)->skip($skip)->get();
+
+        return view('events.list', [
+            'events' => $events,
+            'count' => $totalRows,
+            'prev_page' => $prevPage ?: 0,
+            'next_page' => $nextPage ?: 0,
+        ]);
+    });
+});
+
+Route::resource('events', EventController::class)
+    ->only(['index', 'edit', 'update', 'destroy']); //->middleware(['auth', 'verified']);

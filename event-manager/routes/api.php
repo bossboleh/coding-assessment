@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\EventController;
+use App\Http\API\EventApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,11 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('/v1')->group(function () {
-    Route::get('/events', [EventController::class, 'list']);
-    Route::get('/active-events', [EventController::class, 'list_active']);
-    Route::get('/events/{id}', [EventController::class, 'view']);
-    Route::post('/events', [EventController::class, 'create']);
-    Route::put('/events/{id}', [EventController::class, 'update']);
-    Route::patch('/events/{id}', [EventController::class, 'partial_update']);
-    Route::delete('/events/{id}', [EventController::class, 'delete']);
+
+    Route::get('/active-events', [EventApiController::class, 'list_active']);
+    Route::get('/events/{id}', [EventApiController::class, 'view']);
+    Route::post('/events', [EventApiController::class, 'create']);
+    Route::put('/events/{id}', [EventApiController::class, 'update']);
+    Route::patch('/events/{id}', [EventApiController::class, 'partial_update']);
+    Route::delete('/events/{id}', [EventApiController::class, 'delete']);
+    Route::get('/events', [EventApiController::class, 'list']);
 });

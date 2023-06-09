@@ -4,58 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 
 class EventController extends Controller
 {
     private $fieldValidations = [
         'name' => 'string|required|max:255',
-        'slug' => 'string|required|regex:^[a-zA-Z\-0-9]+$'
+        'slug' => 'string|required|regex:^[a-zA-Z\-0-9]+$',
+        'start_at' => 'string|required',
+        'end_at' => 'string|required',
     ];
 
-    /** ################## API ################## */
     /**
      * List all events.
      * @return string
      */
-    public function list()
+    public function index($currentPage = 0)
     {
+        $paginator = App::make(Paginator::class);
 
-        $events = Event::all();
+        $activeEvents = Event::where('deleted_at', null);
+        $totalRows = $activeEvents->count();
 
-        return $events->toJson();
-    }
+        list(
+            $prevPage,
+            $nextPage,
+            $skip,
+            $pageLimit
+        ) = $paginator->getPagingNumber(
+            $currentPage,
+            $totalRows
+        );
 
-    /**
-     * List active events.
-     * @return string
-     */
-    public function list_active()
-    {
-        $currentDateTime = date('Y-m-d H:i:s');
-        $events = DB::table('events')
-            ->where(
-                "start_at",
-                ">=",
-                $currentDateTime
-            )
-            ->where(
-                "end_at",
-                "<=",
-                $currentDateTime
-            )
+        $events = $activeEvents->limit($pageLimit)
+            ->skip($skip)
             ->get();
-        return $events->toJson();
+
+        return view('events.list', [
+            'events' => $events,
+            'count' => $totalRows,
+            'prevPage' => $prevPage ?: 0,
+            'nextPage' => $nextPage ?: 0,
+        ]);
     }
 
-    /**
-     * Create an event
-     */
-    public function create(Request $request, Event $event)
-    {
-        $validated = $request->validate($this->fieldValidations);
 
-        Event::create($validated);
+    /**
+     * Edit an event
+     */
+    public function edit(Request $request, Event $event)
+    {
+        return view(
+            'events.edit',
+            ['event' => $event]
+        );
     }
 
     /**
@@ -65,17 +67,9 @@ class EventController extends Controller
     {
         $validated = $request->validate($this->fieldValidations);
 
-        $event->save($validated);
-    }
-
-    /**
-     * Partially update an event
-     */
-    public function partial_update(Request $request, Event $event)
-    {
-        $validated = $request->validate($this->fieldValidations);
-
         $event->update($validated);
+
+        return redirect(route('events.view'));
     }
 
     /**
@@ -87,10 +81,11 @@ class EventController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Destroy an event
      */
-    public function delete(Event $event)
+    public function destroy(Event $event)
     {
-        $event->delete();
+        $event->deleted_at = date('Y-m-d H:i:s');
+        $event->update();
     }
 }
