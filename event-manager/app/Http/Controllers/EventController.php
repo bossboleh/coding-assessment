@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
+    private $fieldValidations = [
+        'name' => 'string|required|max:255',
+        'slug' => 'string|required|regex:^[a-zA-Z\-0-9]+$'
+    ];
 
     /** ################## API ################## */
     /**
@@ -16,6 +20,10 @@ class EventController extends Controller
      */
     public function list()
     {
+
+        $events = Event::all();
+
+        return $events->toJson();
     }
 
     /**
@@ -24,15 +32,30 @@ class EventController extends Controller
      */
     public function list_active()
     {
+        $currentDateTime = date('Y-m-d H:i:s');
+        $events = DB::table('events')
+            ->where(
+                "startAt",
+                ">=",
+                $currentDateTime
+            )
+            ->where(
+                "endAt",
+                "<=",
+                $currentDateTime
+            )
+            ->get();
+        return $events->toJson();
     }
-
 
     /**
      * Create an event
      */
     public function create(Request $request, Event $event)
     {
-        //
+        $validated = $request->validate($this->fieldValidations);
+
+        Event::create($validated);
     }
 
     /**
@@ -40,7 +63,9 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        $validated = $request->validate($this->fieldValidations);
+
+        $event->save($validated);
     }
 
     /**
@@ -48,21 +73,24 @@ class EventController extends Controller
      */
     public function partial_update(Request $request, Event $event)
     {
-        //
+        $validated = $request->validate($this->fieldValidations);
+
+        $event->update($validated);
     }
+
     /**
      * Show an event
      */
-    public function view(Event $event)
+    public function view($id)
     {
-        //
+        return Event::where("id", $id)->get();
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function delete(Event $event)
     {
+        $event->delete();
     }
 }
