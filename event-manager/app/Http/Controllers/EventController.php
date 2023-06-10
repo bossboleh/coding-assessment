@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Services\Paginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 

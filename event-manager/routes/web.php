@@ -37,8 +37,8 @@ Route::prefix('/events')->group(function () {
         return view('events.list', [
             'events' => $events,
             'count' => $totalRows,
-            'prev_page' => $prevPage ?: 0,
-            'next_page' => $nextPage ?: 0,
+            'prevPage' => $prevPage ?: 0,
+            'nextPage' => $nextPage ?: 0,
         ]);
     });
 

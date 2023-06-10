@@ -65,6 +65,8 @@ class EventApiController extends Controller
         } else {
             $event->save($request->all());
         }
+
+        return view('events.list');
     }
 
     /**
@@ -77,6 +79,8 @@ class EventApiController extends Controller
         if (isset($event)) {
             $event->update($request->all());
         }
+
+        return view('events.list');
     }
 
     /**
