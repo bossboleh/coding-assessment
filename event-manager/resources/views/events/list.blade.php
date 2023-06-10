@@ -10,6 +10,13 @@
 
 <body>
     <div>
+        <button {{ $prevPage < 0 ? 'disabled' : '' }}
+            onclick="window.location='/events/page/{{ $prevPage }}'">Prev</button>
+        <button {{ $nextPage == 0 ? 'disabled' : '' }}
+            onclick="window.location='/events/page/{{ $nextPage }}'">Next</button>
+        <button onclick="window.location='/events/create'">New Event</button>
+    </div>
+    <div>
         <table class="event-list" border="1">
             <thead>
                 <th>Event Name</th>
@@ -40,13 +47,7 @@
         </table>
 
     </div>
-    <div>
 
-        <button {{ $prev_page < 0 ? 'disabled' : '' }}
-            onclick="window.location='/events/page/{{ $prev_page }}'">Prev</button>
-        <button {{ $next_page == 0 ? 'disabled' : '' }}
-            onclick="window.location='/events/page/{{ $next_page }}'">Next</button>
-    </div>
 </body>
 
 </html>

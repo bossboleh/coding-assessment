@@ -23,13 +23,8 @@ Route::get('/', function () {
 
 
 Route::prefix('/events')->group(function () {
-    Route::get('/{id}', function ($id) {
-        return view('events.view', [
-            'event' => Event::find($id)
-        ]);
-    });
 
-    //Pagination
+    //List Events
     Route::get('/page/{page}', function ($currentPage) {
         $paginator = App::make(Paginator::class);
 
@@ -46,7 +41,19 @@ Route::prefix('/events')->group(function () {
             'next_page' => $nextPage ?: 0,
         ]);
     });
+
+    //Create Event
+    Route::get('/create', function () {
+        return view('events.create');
+    });
+
+    //View Event
+    Route::get('/{id}', function ($id) {
+        return view('events.view', [
+            'event' => Event::find($id)
+        ]);
+    });
 });
 
 Route::resource('events', EventController::class)
-    ->only(['index', 'edit', 'update', 'destroy']); //->middleware(['auth', 'verified']);
+    ->only(['index', 'store', 'edit', 'update', 'destroy']); //->middleware(['auth', 'verified']);

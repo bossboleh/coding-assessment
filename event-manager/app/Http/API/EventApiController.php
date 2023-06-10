@@ -46,9 +46,11 @@ class EventApiController extends Controller
     /**
      * Create an event
      */
-    public function create(Request $request, Event $event)
+    public function create(Request $request)
     {
-        return Event::create($request->all());
+        Event::create($request->all());
+
+        return view('events.list');
     }
 
     /**
