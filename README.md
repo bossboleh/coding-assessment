@@ -4,8 +4,8 @@
 
 #### Application Setup (DO THIS FIRST)
 
-- **Fork this repository** into your **GitHub** account (You can create a **GitHub** account if you don't have one)
-- Clone the repository from **your repository**
+Create a **GitHub** account if you don't have one.
+Create a new private repositories, name it boss-boleh-coding-assessment.
 
 #### First Test - CRUD REST API
 
@@ -27,9 +27,9 @@
   - PATCH /api/v1/events/{id} -> Partially update event
   - DELETE /api/v1/events/{id} -> Soft delete an event
 - Seed the database with dummy events (min. 5 events)
-- Merge `feature/crud-api` with `master`, use PR
+- Merge `feature/crud-api` with `master`, use Pull Request
 
-#### Second Test - UI
+#### BONUS - UI
 
 - Make sure that you are in `master` branch
 - Create a new branch and name it `feature/ui`
@@ -38,25 +38,18 @@
   - /events/{id} -> Show individual event
   - /events/create -> Create an event
   - /events/{id}/edit -> Edit an event
-- Merge `feature/ui` with `master`, use PR
+- Email function: Send an email everytime an event is created (you can use mailtrap or other smtp provider that's easy to setup)
+- Authentication -> only authenticated users can create, update and delete events
 
-#### Third Test - Advance Topic
+- Merge `feature/ui` with `master`, use Pull Request
 
-- Make sure that you are in `master` branch
-- Create a new branch and name it `feature/advance-topic`
-- Implement these features
-  - Server side data caching with redis
-  - Send an email everytime an event is created (you can use mailtrap or other smtp provider that's easy to setup)
-  - Authentication -> only authenticated users can create, update and delete events
-  - Calling of an external API(s) and display the data in the UI (can be any public external API(s))
-
-## Bonus points
+## Extra Note
 
 - If you follow a clean code principle
 - If you follow a good git practice
-- If you deploy the application on the internet
 
 ## Finally
 
 - Push all the codes into your remote repository
-- Make sure the repository is public
+- invite honkeat.kuan@bossboleh.com to your private repository
+- Inform HR on your completion
